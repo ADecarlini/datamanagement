@@ -16,92 +16,59 @@ conf.xlsx description:
 @author: Adecarlini
 """
 
-# import classes
-from numpy import append, insert
-from pathlib import Path
+# import classes & functions
+from readConfiguration import getinfoindex
+from readConfiguration import getconfigurationfile
 import os
 import openpyxl 
-
+import string
+ 
 
 #constant definition
-
 ## configuration file found in root directory
 CONF_FILE = 'conf.xlsx'
 INPUT_DIRECTORY = '.\\input'
-
+OUTPUT_DIRECTORY = '.\\output'
+WORKING_DIRECTORY = 'F:\\Python\\projects\\gestionDeFicheros\\datamanagement'
 ## configuration sheets name
 NAME_SHEET = 'cambio_de_nombre'
-NAME_SHEET_INITIAL_NAME_INDEX = '1'
-NAME_SHEET_FINAL_NAME_INDEX = '2'
-
+NAME_SHEET_INITIAL_NAME_INDEX = 1
+NAME_SHEET_FINAL_NAME_INDEX = 2
+COLUMN_INITAIL_NAME_INDEX = 0
+COLUMN_FINAL_NAME_INDEX = 1
+## order of the sheet configuration
 ORDER_SHEET = 'orden_de_columnas'
 ORDER_SHEET_NAME_INDEX = 1
 ORDER_SHEET_ORDER_INDEX = 2
+COLUMN_NAME_INDEX = 0
+COLUMN_ORDER_INDEX = 1
+## configuration info Index
+NAME_INDEX = 1
+ORDER_INDEX = 0
+
+## setting working directory
+os.chdir(WORKING_DIRECTORY)
+print('final directory --> '+os.getcwd())
 
 # Main script
-print('------------- \n')
-print('current directory --> '+os.getcwd())
+print('-- running ----------- \n')
+## load configuration
+configurationfile = getconfigurationfile(WORKING_DIRECTORY, CONF_FILE,
+                                         NAME_SHEET, ORDER_SHEET)
+nameinformation = configurationfile[NAME_INDEX]
+orderinformation = configurationfile[ORDER_INDEX]
+
+#####
+a = openpyxl.load_workbook(CONF_FILE)
+a = a[NAME_SHEET]
+a['A1'].value
+
+## obtengo las letras del abecedario y accedo al excel ( a cada columna)
+for columnletter in string.ascii_uppercase[:a.max_column]:  
+    print(columnletter)
+    print( a[columnletter + '1'].value)
+
+print("hecho")
 
 
 
-
-print('order sheet--> rows: ' + str(columnordersheet.max_row))
-
-
-
-for i in range(1, columnordersheet.max_row, 1):
-    print ('|' + str(columnordersheet.cell(column = 1, row = i).value)
-        + '|' + str(columnordersheet.cell(column = 2, row = i).value)  
-        + '|')
-
-
-##functions
-
-## loads all CSV and XLSX files in ./input dir
-def getinputfiles(dir = INPUT_DIRECTORY):
-    inputfiles = os.listdir(dir)
-    return(inputfiles)
-    
-## retrieves the configuration options
-def getconfigurationoptions(configurationfile = CONF_FILE):
-    ### read configuration file
-    configurationfile = openpyxl.load_workbook(CONF_FILE)
-    columnordersheet = configurationfile[ORDER_SHEET]
-    columnnamessheet = configurationfile[NAME_SHEET]
-
-    ### number of rules in each sheet    
-    columnordersheetlenght = configurationfile[ORDER_SHEET].max_row
-    columnnamessheetlenght = configurationfile[NAME_SHEET].max_row
-    
-    
-    namesconfig = 1
-    orderconfig = 1
-    return(namesconfig, orderconfig)
-
-
-
-def returnsheetvalues(sheet, rownumber, colnumber = 2):
-    temp = []
-    for rowindex in range(1, rownumber,1):
-        temp
-        for colindex in range(1, colnumber,1):
-            
-
-
-
-
-
-def renameColumns(excelsheet):
-    
-    
-
-a = columnnamessheet
-tmp = [0] * a.max_row
-
-for row in range(1,a.max_row,1):
-    A = a['A'+str(row)].value
-    B = a['B'+str(row)].value
-    print(A+'|'+B)
-    tmp[row] = [A,B]
-    print(i)
-    print(tmp[i])
